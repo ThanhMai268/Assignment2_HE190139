@@ -4,10 +4,6 @@ const { Schema, model } = mongoose;
 
 const memberSchema = new Schema(
     {
-        _id: {
-            type: String,
-            default: () => new mongoose.Types.ObjectId().toString()
-        },
         fullName: {
             type: String,
             required: true,

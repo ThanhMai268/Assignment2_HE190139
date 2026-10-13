@@ -29,6 +29,24 @@ const getLoanById = async (req, res) => {
     }
 };
 
+// GET all loans of a  member
+const getLoansByMemberId = async (req, res) => {
+    try {
+        const memberId = req.params.memberId;
+        const member = await Member.findById(memberId);
+        if (!member) {
+            return res.status(404).json({ message: 'Member not found' })
+        }
+        const loans = await Loan.find({ member_id: memberId })
+            .populate('member_id', 'fullName email phone membershipType isActive')
+            .populate('items.book_id', 'title author category isbn publishedYear totalCopies availableCopies')
+        return res.status(200).json(loans);
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving loans for member by ID', error: error.message });
+    }
+}
+
+
 // POST Create a new loan
 const createLoan = async (req, res) => {
     try {
@@ -127,6 +145,7 @@ const deleteLoanById = async (req, res) => {
 module.exports = {
     getAllLoans,
     getLoanById,
+    getLoansByMemberId,
     createLoan,
     updateLoanById,
     deleteLoanById

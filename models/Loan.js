@@ -1,17 +1,11 @@
 const mongoose = require('mongoose');
-require('./Member');
-require('./Book');
 
 const { Schema, model } = mongoose;
 
 const loanSchema = new Schema(
     {
-        _id: {
-            type: String,
-            default: () => new mongoose.Types.ObjectId().toString()
-        },
         member_id: {
-            type: String,
+            type: Schema.Types.ObjectId,
             ref: 'Member',
             required: true
         },
@@ -19,7 +13,7 @@ const loanSchema = new Schema(
             {
                 _id: false,
                 book_id: {
-                    type: String,
+                    type: Schema.Types.ObjectId,
                     ref: 'Book',
                     required: true
                 },
